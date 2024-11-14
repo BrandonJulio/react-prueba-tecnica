@@ -1,49 +1,22 @@
-import { useEffect, useState } from 'react'
 import './App.css'
+import { useCatFact } from './hooks/useCatFact.js'
+import { useCatImage } from './hooks/useCatImage.js'
 
-const CAT_ENDPOINT_RANDOM_FACT = 'https://catfact.ninja/fact'
 // const CAT_ENDPOINT_IMAGE_URL = 'https://cataas.com/cat/says/${threeFirstWord}?fontSize=30&fontColor=red&json=true'
-const CAT_PREFIX_IMAGE_URL = 'https://cataas.com'
+// const CAT_PREFIX_IMAGE_URL = 'https://cataas.com'
+
 export function App () {
-  const [fact, setFact] = useState()
-  const [imageUrl, setImageUrl] = useState()
-  const [factError, setFactError] = useState()
+  const { fact, refreshFact } = useCatFact()
+  const { imageUrl } = useCatImage({ fact })
 
-  // Para recuperar la cita al cargar la pagina
-  useEffect(() => {
-    fetch(CAT_ENDPOINT_RANDOM_FACT)
-      .then(res => {
-        if (!res.ok) {
-          setFactError('No se ha podido recuperar la cita')
-        }
-        return res.json()
-      })
-      .then(data => {
-        const { fact } = data
-        setFact(data.fact)
-      })
-      .catch(error => {
-        // Tanto si hay un error con la respuesta de la API como si hay un error con la petición
-        setFactError('No se ha podido recuperar la cita')//
-        console.error('Fecth error: ', error)
-      })
-  }, [])
-
-  // Para recuperar la imagen cada vez que tenemos una cita nueva
-
-  useEffect(() => {
-    if (!fact) return
-    const threeFirstWords = fact.split(' ', 3).join(' ')
-    console.log(threeFirstWords)
-
-    fetch(`https://cataas.com/cat/says/${threeFirstWords}?size=50&color=red`)
-      .then(Response => {
-        setImageUrl(Response.url)
-      })
-  }, [fact])
+  // Botton para recuperar una nueva cita
+  const handleClick = async () => {
+    refreshFact()
+  }
 
   return (
     <main>
+      <button onClick={handleClick}>Get new fact</button>
       <h1>App de gatos</h1>
       {fact && <p>{fact}</p>}{/* Rederizado condicional */}
       <img src={imageUrl} alt={`Image with the first three words of the fact: ${fact}`} />
