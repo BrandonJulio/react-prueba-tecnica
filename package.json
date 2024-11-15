@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@playwright/test": "^1.48.2",
+    "@types/node": "^22.9.0",
     "standard": "^17.1.2",
     "vite": "^5.4.10"
   },
@@ -17,6 +19,6 @@
     "react-dom": "18.3.1"
   },
   "eslintConfig": {
-    "extends" : "./node_modules/standard/eslintrc.json"
+    "extends": "./node_modules/standard/eslintrc.json"
   }
 }

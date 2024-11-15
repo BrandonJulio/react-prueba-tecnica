@@ -1,5 +1,4 @@
 import './App.css'
-// import { Otro } from './Components/Otro.jsx'
 import { useCatFact } from './hooks/useCatFact.js'
 import { useCatImage } from './hooks/useCatImage.js'
 
